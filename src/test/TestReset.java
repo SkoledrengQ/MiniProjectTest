@@ -1,13 +1,15 @@
 package test;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.*;
-import static org.junit.Assert.*;
 
 import controllayer.*;
-import modellayer.*;
+import modellayer.Currency;
 
 /**
- * Inspired by the book: Flexible, Reliable Software Henrik Bærbak Christensen:
+ * Inspired by the book: Flexible, Reliable Software Henrik B rbak Christensen:
  * Flexible, Reliable Software. Taylor and Francis Group, LLC 2010
  */
 
@@ -27,13 +29,36 @@ public class TestReset {
 	@Test
 	public void shouldClearAfterBuy() throws IllegalCoinException, Exception {
 		//
+
+        int coinValue = 50;
+		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.DKK;
+		Currency.ValidCoinType coinType = Currency.ValidCoinType.FRACTION;
+
+        ps.addPayment(coinValue, coinCurrency, coinType);
+
+        assertEquals(3, ps.readDisplay());
+
+        ps.buy();
+
+        assertEquals(0,ps.readDisplay());
 	}
 
 	/**
 	 * Verify that cancel() clears the pay station
 	 */
+	//@Test Department added functionality for canceling
 	@Test
 	public void shouldClearAfterCancel() throws IllegalCoinException {
-		//
+		
+		int coinValue = 50;
+		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.DKK;
+		Currency.ValidCoinType coinType = Currency.ValidCoinType.FRACTION;
+		
+		ps.addPayment(coinValue, coinCurrency, coinType);
+		
+		assertEquals(3, ps.readDisplay());
+		
+		ps.cancel();
+		assertEquals(0, ps.readDisplay());
 	}
 }

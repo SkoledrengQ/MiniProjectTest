@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import controllayer.*;
 import modellayer.*;
 
 /**
- * Inspired by the book: Flexible, Reliable Software Henrik Bærbak Christensen:
+ * Inspired by the book: Flexible, Reliable Software Henrik B rbak Christensen:
  * Flexible, Reliable Software. Taylor and Francis Group, LLC 2010
  */
 
@@ -42,20 +43,40 @@ public class TestCalculationCurrencyEuro {
 	/**
 	 * Entering 5 cents should make the display report 2 minutes parking time
 	 */
+	//@Test Department added a test with an input of the correct amount of coins to an expected parking time.
 	@Test
 	public void shouldDisplay2MinFor5Cents() throws IllegalCoinException {
 		
-//		// Arrange
-//		int expectedParkingTime = 2;	// In minutes		
-//		int coinValue = 5;
-//		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.EURO;
-//		Currency.ValidCoinType coinType = Currency.ValidCoinType.FRACTION;
+		// Arrange
+		int expectedParkingTime = 2;	// In minutes		
+		int coinValue = 5;
+		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.EURO;
+		Currency.ValidCoinType coinType = Currency.ValidCoinType.FRACTION;
 		
 		// Act
+		ps.addPayment(coinValue, coinCurrency, coinType);
 		
 		// Assert
-
+		assertEquals(expectedParkingTime, ps.readDisplay());
+		System.out.println("Expected time: " + expectedParkingTime + "\nBought time: " + ps.readDisplay());
 	}
 
+	//@Test Department added a test with an input of an incorrect amount of coins to an expected parking time.
+	@Test
+	public void shouldDisplay2MinFor5CentsFail() throws IllegalCoinException {
+		
+		// Arrange
+		int expectedParkingTime = 3;	// In minutes		
+		int coinValue = 5;
+		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.EURO;
+		Currency.ValidCoinType coinType = Currency.ValidCoinType.FRACTION;
+		
+		// Act
+		ps.addPayment(coinValue, coinCurrency, coinType);
+		
+		// Assert
+		assertNotEquals(expectedParkingTime, ps.readDisplay());
+		System.out.println("Expected time: " + expectedParkingTime + "\nBought time: " + ps.readDisplay());
+	}
 	
 }
