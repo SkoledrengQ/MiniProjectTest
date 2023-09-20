@@ -28,7 +28,7 @@ public class TestIllegalCoin {
 	 */
 	
 	
-	
+	// TEST CASE 2 - INVALID COINS - TEST MED NOK = SKAL GIVE EXCEPTION (VIRKER)
 	// Norwegian coin
 	@Test(expected = IllegalCoinException.class)
 	public void shouldRejectIllegalCurrencyNokCoin() throws IllegalCoinException {
