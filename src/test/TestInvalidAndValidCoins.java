@@ -20,6 +20,7 @@ public class TestInvalidAndValidCoins {
 		ps = new ControlPayStation();
 	}
 	
+	// TEST 4 - VALID AND INVALID COINS
 	@Test
 	public void shouldRejectIllegalCurrencyNokCoinAndAcceptDKK() throws IllegalCoinException {
 		// Arrange
@@ -34,15 +35,12 @@ public class TestInvalidAndValidCoins {
 		//Act
 		try {
 			
-			ps.addPayment(coinValue, coinCurrency, coinType);
 			ps.addPayment(coinValue2, coinCurrency2, coinType2);
-
+			ps.addPayment(coinValue, coinCurrency, coinType);
 
 		
 	} catch (IllegalCoinException e) {
 		exceptionThrown = true;
-	} finally {
-	ps.addPayment(coinValue2, coinCurrency2, coinType2);
 		
 	}
 		//Assert
