@@ -1,6 +1,7 @@
 package databaselayer;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Calendar;
 import java.sql.SQLException;
@@ -9,8 +10,13 @@ import modellayer.*;
 
 public class DatabasePPrice implements IDbPPrice {
 	
-	//Hardcoded for now. TODO: Use database
+	static DBConnection con = null;
+	
+	//Test department: Non functionally hardcoded
 	public PPrice getCurrentPrice() {
+		
+		
+		
 		return new PPrice();
 	}
 	
@@ -21,23 +27,31 @@ public class DatabasePPrice implements IDbPPrice {
 		java.sql.Date dateNow = new java.sql.Date(calendar.getTime().getTime());
 		
 		Connection con = DBConnection.getInstance().getDBcon();
-
-		String baseSelect = "select top 1 price, pZone_id from PPrice ";
-		baseSelect += "where pZone_id = " + zoneId + " and starttime < '" + dateNow + "' ";
-		baseSelect += "order by starttime desc";
-		System.out.println(baseSelect);
+		
+		//@Test Department
+		//Fixed SQL String with joins
+		String baseSelect = "select top 1 p.price, p.pZone_id, z.name from PPrice p"
+				+ " join PZone z on p.pZone_id = z.id"
+				+ " where p.pZone_id = " + zoneId
+				+ " and p.starttime < '" + dateNow + "' "
+				+ " order by p.starttime desc";
 	
-		//ResultSet rs = null; 
-		int price, pZoneId;
-		PZone pZone; 
 		try {
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
-			// Todo: Get PPrice object
-			// ResultSet rs = stmt.executeQuery(baseSelect);
-			/*
-			 * Insert code 
-			 */
+			
+			////@Test Department
+			//Added code to fetch the updated price
+			ResultSet rs = stmt.executeQuery(baseSelect);			
+			while (rs.next()) {
+				int price = rs.getInt("price");
+				int pZoneId = rs.getInt("pZone_id");
+				String pZoneName = rs.getString("name");
+				double exchangeRate = 7.5;
+				PZone pZone = new PZone(pZoneId, pZoneName);
+				foundPrice = new PPrice(price, pZone, exchangeRate);
+			}			
+			
 			stmt.close();
 		} catch (SQLException ex) {
 			foundPrice = null;
@@ -56,8 +70,7 @@ public class DatabasePPrice implements IDbPPrice {
 			throw dle;
 		} finally {
 			DBConnection.closeConnection();
-		}
-				
+		}		
 		return foundPrice;
 	}
 	
