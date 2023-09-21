@@ -28,7 +28,7 @@ public class TestBuyTicket {
     }
 
     @Test
-    public void shouldGet4MinFor1CentAnd1Ore() throws IllegalCoinException, DatabaseLayerException {
+    public void shouldGet4MinFor1CentAnd50Ore() throws IllegalCoinException, DatabaseLayerException {
     	
     	//Arrange
         int expectedMinutes = 4;
